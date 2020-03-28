@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Portfolio
+{% endblock %}
+
+{% block main %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Symbol</th>
+                <th>Name</th>
+                <th>Shares</th>
+                <th>Price</th>
+                <th>TOTAL</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for row in rows %}
+            <tr>
+                <td>{{ row["symbol"] }}</td>
+                <td>{{ row["name"] }}</td>
+                <td>{{ row["net_shares"] }}</td>
+                <td>${{ "{0:.2f}".format(row["current_price"]) }}</td>
+                <td>${{ "{0:.2f}".format(row["net_shares"] * row["current_price"]) }}</td>
+            </tr>
+        {% endfor %}
+            <tr>
+                <td>CASH</td>
+                <td colspan="3"></td>
+                <td>${{ "{0:.2f}".format(user_balance[0]["cash"]) }}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4"></td>
+                <td class="tfoot-total">
+                    {% if total[0]["total"] == None or total[0]["total"] < 0 %}
+                        ${{ "{0:.2f}".format(user_balance[0]["cash"]) }}
+                    {% else %}
+                        ${{ "{0:.2f}".format(user_balance[0]["cash"] + total[0]["total"]) }}
+                    {% endif %}
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+{% endblock %}
